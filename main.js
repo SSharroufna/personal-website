@@ -3,18 +3,19 @@ import { gsap } from 'gsap';
 
 const svg = document.getElementById('mySVG');
 const clickableAreas = document.querySelectorAll('.rect');
+
 let isZoomedIn = false;
 const originalViewBox = svg.getAttribute('viewBox');
-
 clickableAreas.forEach(rect => {
     rect.addEventListener('click', (event) => {
         event.stopPropagation();
-
         const bbox = rect.getBBox();
         const newViewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
 
+        const clickedId = rect.getAttribute('id');
+        console.log(clickedId);
+
         if (!isZoomedIn) {
-            // Zoom-in animation using fromTo
             gsap.fromTo(svg,
                 { scale: 0.1, attr: { viewBox: originalViewBox } },
                 {
@@ -24,6 +25,8 @@ clickableAreas.forEach(rect => {
                     ease: "expo.out",
                     onComplete: () => {
                         isZoomedIn = true;
+                        // Call the scroll
+                        document.addEventListener('scroll', handleScroll);
                     }
                 }
             );
@@ -32,6 +35,18 @@ clickableAreas.forEach(rect => {
         }
     });
 });
+
+function handleScroll() {
+
+    const sectionIdMap = {
+        'aboutSection': 'aboutSection',
+        'projectsSection': 'projectsSection',
+        'experienceSection': 'experienceSection',
+        'contactSection': 'contactSection'
+    };
+
+}
+
 
 function zoomOut() {
     // Zoom-out animation using fromTo

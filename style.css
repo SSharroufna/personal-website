@@ -1,16 +1,26 @@
 body {
-  background-color: black;
-  color: #ccc;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; 
-  margin: 0; 
+  margin: 0;
+  overflow-x: hidden;
+  background: black;
+}
+
+#svgContainer {
+  position: relative;
+  width: 100%;
+  overflow: hidden; 
 }
 
 svg {
   display: block; 
-  width: 100%; 
-  height:100%;
+  max-width: 100%; 
+}
+
+section {
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0; 
+  padding: 20px;
+  box-sizing: border-box;
 }
