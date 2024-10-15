@@ -11,25 +11,22 @@ clickableAreas.forEach(rect => {
         event.stopPropagation();
 
         const bbox = rect.getBBox();
+        const newViewBox = `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`;
 
         if (!isZoomedIn) {
-            // Calculate new viewBox values for zoom-in
-            const newWidth = bbox.width;
-            const newHeight = bbox.height;
-            const newX = bbox.x;
-            const newY = bbox.y;
-
-            // Animate the viewBox using GSAP
-            gsap.to(svg, {
-                duration: 1,
-                ease: "expo.out",
-                onUpdate: () => {
-                    svg.setAttribute('viewBox', `${newX} ${newY} ${newWidth} ${newHeight}`);
-                },
-                onComplete: () => {
-                    isZoomedIn = true;
+            // Zoom-in animation using fromTo
+            gsap.fromTo(svg,
+                { scale: 0.1, attr: { viewBox: originalViewBox } },
+                {
+                    scale: 1,
+                    attr: { viewBox: newViewBox },
+                    duration: 1.2,
+                    ease: "expo.out",
+                    onComplete: () => {
+                        isZoomedIn = true;
+                    }
                 }
-            });
+            );
         } else {
             zoomOut();
         }
@@ -37,14 +34,17 @@ clickableAreas.forEach(rect => {
 });
 
 function zoomOut() {
-    gsap.to(svg, {
-        duration: 1,
-        ease: "expo.out",
-        onUpdate: () => {
-            svg.setAttribute('viewBox', originalViewBox);
-        },
-        onComplete: () => {
-            isZoomedIn = false;
+    // Zoom-out animation using fromTo
+    gsap.fromTo(svg,
+        { scale: 1, attr: { viewBox: svg.getAttribute('viewBox') } },
+        {
+            scale: 1,
+            attr: { viewBox: originalViewBox },
+            duration: 1.2,
+            ease: "expo.out",
+            onComplete: () => {
+                isZoomedIn = false;
+            }
         }
-    });
+    );
 }
