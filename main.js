@@ -1,11 +1,38 @@
 import './style.css';
 import { gsap } from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 
+
+// Moving the circle along the path
+gsap.registerPlugin(MotionPathPlugin);
+const path = document.querySelector('#letterS path');
+
+// Get the length of the path
+const pathLength = path.getTotalLength();
+
+gsap.to("#movingCircle", {
+    duration: 5,
+    motionPath: {
+        path: path,
+        align: path,
+        alignOrigin: [0.5, 0.5],
+        start: 1,
+        end: 0,
+        autoRotate: true
+    },
+    repeat: -1,
+    ease: "none"
+});
+
+
+// Zooming in and out of the SVG
 const svg = document.getElementById('mySVG');
-const clickableAreas = document.querySelectorAll('.rect');
+const clickableAreas = document.querySelectorAll('rect');
 
 let isZoomedIn = false;
 const originalViewBox = svg.getAttribute('viewBox');
+
+
 clickableAreas.forEach(rect => {
     rect.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -35,17 +62,6 @@ clickableAreas.forEach(rect => {
         }
     });
 });
-
-function handleScroll() {
-
-    const sectionIdMap = {
-        'aboutSection': 'aboutSection',
-        'projectsSection': 'projectsSection',
-        'experienceSection': 'experienceSection',
-        'contactSection': 'contactSection'
-    };
-
-}
 
 
 function zoomOut() {
