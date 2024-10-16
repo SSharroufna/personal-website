@@ -1,37 +1,66 @@
 import './style.css';
 import { gsap } from 'gsap';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 
-// Moving the circle along the path
+// // Moving the circle along the path
 gsap.registerPlugin(MotionPathPlugin);
-const path = document.querySelector('#letterS path');
+const svg = document.getElementById('mySVG');
 
-// Get the length of the path
-const pathLength = path.getTotalLength();
+document.addEventListener('DOMContentLoaded', () => {
 
-gsap.to("#movingCircle", {
-    duration: 5,
-    motionPath: {
-        path: path,
-        align: path,
-        alignOrigin: [0.5, 0.5],
-        start: 1,
-        end: 0,
-        autoRotate: true
-    },
-    repeat: -1,
-    ease: "none"
+    gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+    // Set initial states
+    var ww = window.innerWidth,
+        wh = window.innerHeight,
+        speed = 20,
+        scrollDist = wh * speed,
+        scrollEnd = wh * (speed - 1),
+        svgWidth = svg.getBoundingClientRect().width,
+        svgHeight = svg.getBoundingClientRect().height;
+
+    gsap.set('#scrollDist', { width: '100%', height: scrollDist });
+    gsap.set('#container', {
+        position: 'fixed',
+        width: svgWidth,
+        height: svgHeight,
+        transformOrigin: '0 0',
+        left: window.innerWidth / 2,
+        top: window.innerHeight / 2,
+        xPercent: -50,
+        yPercent: -50,
+        autoAlpha: 1
+    });
+
+    // GSAP timeline with ScrollTrigger
+    gsap.timeline({
+        defaults: { duration: 1, ease: 'none' },
+        scrollTrigger: {
+            trigger: '#scrollDist',
+            start: 'top top',
+            end: '+=' + scrollEnd,
+            scrub: 0.3,
+            onUpdate: ({ progress }) => console.log(progress) // info for position
+        }
+    })
+        .to('#movingCircle', {
+            motionPath: {
+                path: "#letterS .cls-1",
+                align: "#letterS .cls-1",
+                alignOrigin: [0.5, 0.5],
+                start: 1,
+                end: 0,
+                autoRotate: true
+            },
+        }, 0);
 });
 
-
 // Zooming in and out of the SVG
-const svg = document.getElementById('mySVG');
 const clickableAreas = document.querySelectorAll('rect');
-
-let isZoomedIn = false;
 const originalViewBox = svg.getAttribute('viewBox');
-
+let isZoomedIn = false;
 
 clickableAreas.forEach(rect => {
     rect.addEventListener('click', (event) => {
@@ -52,8 +81,7 @@ clickableAreas.forEach(rect => {
                     ease: "expo.out",
                     onComplete: () => {
                         isZoomedIn = true;
-                        // Call the scroll
-                        document.addEventListener('scroll', handleScroll);
+                        // Allow for scrolling when zoomed in
                     }
                 }
             );
@@ -62,7 +90,6 @@ clickableAreas.forEach(rect => {
         }
     });
 });
-
 
 function zoomOut() {
     // Zoom-out animation using fromTo
