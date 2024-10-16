@@ -1,15 +1,12 @@
-html, body {
+body {
   width:100%;
   height:100vh;
   background:white;
   margin:0;
+  overflow:hidden;
 }
 #container{
-  visibility:hidden;
-
-    /* display: block; 
-    max-width: 100%;  */
-  
+  visibility:hidden; 
 }
 #mySVG{
   position:absolute;
