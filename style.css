@@ -3,7 +3,7 @@ body {
   height:100vh;
   background:white;
   margin:0;
-  /* overflow:hidden; */
+  overflow:hidden;
 }
 #container{
   visibility:hidden; 
@@ -12,13 +12,3 @@ body {
   position:absolute;
   overflow:visible;  
 }
-
-/* section {
-  height: 100vh; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f0f0f0; 
-  padding: 20px;
-  box-sizing: border-box;
-} */

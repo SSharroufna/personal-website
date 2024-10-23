@@ -32,11 +32,7 @@ clickableAreas.forEach(rect => {
                     ease: "expo.out",
                     onComplete: () => {
                         isZoomedIn = true;
-                        // document.body.style.overflow = 'auto';
-                        // gsap.set('#container', {
-                        //     left: window.innerWidth / 2 - bbox.x - bbox.width / 2,
-                        //     top: window.innerHeight / 2 - bbox.y - bbox.height / 2,
-                        // });
+                        document.body.style.overflow = 'auto';
 
 
                         handleScroll();
@@ -102,8 +98,8 @@ function handleScroll() {
     const ySet = gsap.quickSetter('#container', "y", "px");
 
     gsap.ticker.add(() => {
-        pos.x += (-gsap.getProperty('#movingCircle', 'x') * 4 - pos.x) * povDelay;
-        pos.y += (-gsap.getProperty('#movingCircle', 'y') * 4 - pos.y) * povDelay;
+        pos.x += (-gsap.getProperty('#movingCircle', 'x') * 4.3 - pos.x) * povDelay;
+        pos.y += (-gsap.getProperty('#movingCircle', 'y') * 4.3 - pos.y) * povDelay;
         xSet(pos.x);
         ySet(pos.y);
     });
@@ -125,7 +121,7 @@ function zoomOut() {
             ease: "expo.out",
             onComplete: () => {
                 isZoomedIn = false;
-                // document.body.style.overflow = 'hidden'; 
+                document.body.style.overflow = 'hidden'; 
             }
         }
     );
