@@ -32,11 +32,13 @@ clickableAreas.forEach(rect => {
                     ease: "expo.out",
                     onComplete: () => {
                         isZoomedIn = true;
-                        document.body.style.overflow = 'auto';
-                        gsap.set('#container', {
-                            left: window.innerWidth / 2 - bbox.x - bbox.width / 2,
-                            top: window.innerHeight / 2 - bbox.y - bbox.height / 2,
-                        });
+                        // document.body.style.overflow = 'auto';
+                        // gsap.set('#container', {
+                        //     left: window.innerWidth / 2 - bbox.x - bbox.width / 2,
+                        //     top: window.innerHeight / 2 - bbox.y - bbox.height / 2,
+                        // });
+
+
                         handleScroll();
                     }
                 }
@@ -47,13 +49,13 @@ clickableAreas.forEach(rect => {
     });
 });
 
-// Initial scroll handling
+//Scroll handling
 let scrollTimeline;
 
 function handleScroll() {
     const ww = window.innerWidth;
     const wh = window.innerHeight;
-    const speed = 20;
+    const speed = 30;
     const scrollDist = wh * speed;
     const scrollEnd = wh * (speed - 1);
     const svgWidth = svg.getBoundingClientRect().width;
@@ -94,17 +96,18 @@ function handleScroll() {
         }, 0);
 
     // Move container to follow circle
-    let povDelay = 1;
+    let povDelay = 1; 
     let pos = { x: -svgWidth / 2, y: -svgHeight / 2 };
     const xSet = gsap.quickSetter('#container', "x", "px");
     const ySet = gsap.quickSetter('#container', "y", "px");
 
     gsap.ticker.add(() => {
-        pos.x += (-gsap.getProperty('#movingCircle', 'x') - pos.x) * povDelay;
-        pos.y += (-gsap.getProperty('#movingCircle', 'y') - pos.y) * povDelay;
+        pos.x += (-gsap.getProperty('#movingCircle', 'x') * 4 - pos.x) * povDelay;
+        pos.y += (-gsap.getProperty('#movingCircle', 'y') * 4 - pos.y) * povDelay;
         xSet(pos.x);
         ySet(pos.y);
     });
+
 
     window.onresize = () => {
         gsap.set('#container', { left: window.innerWidth / 2, top: window.innerHeight / 2 });
@@ -122,7 +125,7 @@ function zoomOut() {
             ease: "expo.out",
             onComplete: () => {
                 isZoomedIn = false;
-                document.body.style.overflow = 'hidden'; 
+                // document.body.style.overflow = 'hidden'; 
             }
         }
     );
